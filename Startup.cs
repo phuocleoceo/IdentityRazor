@@ -9,6 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
+using IdentityRazor.Models;
+using IdentityRazor.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityRazor
 {
@@ -24,6 +29,14 @@ namespace IdentityRazor
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDbContext<IRContext>(options =>
+			{
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+			});
+			services.AddIdentity<AppUser, IdentityRole>()
+					.AddEntityFrameworkStores<IRContext>()
+					.AddDefaultTokenProviders();
+
 			services.AddRazorPages();
 		}
 
@@ -46,6 +59,7 @@ namespace IdentityRazor
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
