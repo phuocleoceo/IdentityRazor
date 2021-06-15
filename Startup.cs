@@ -16,6 +16,7 @@ using IdentityRazor.Data;
 using Microsoft.AspNetCore.Identity;
 using IdentityRazor.Mail;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace IdentityRazor
 {
@@ -71,6 +72,13 @@ namespace IdentityRazor
 			// Configure Options
 			services.AddOptions();
 			services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+			// 3rd Authentication
+			services.AddAuthentication().AddGoogle(options =>
+			{
+				var googleSection = Configuration.GetSection("Authentication:Google");
+				options.ClientId = googleSection["ClientId"];
+				options.ClientSecret = googleSection["ClientSecret"];
+			});
 			// DI
 			services.AddTransient<ISendMailService, SendMailService>();
 			// Razor or ControllerWithView
