@@ -15,6 +15,7 @@ using IdentityRazor.Models;
 using IdentityRazor.Data;
 using Microsoft.AspNetCore.Identity;
 using IdentityRazor.Mail;
+using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 
 namespace IdentityRazor
 {
@@ -73,7 +74,7 @@ namespace IdentityRazor
 			// DI
 			services.AddTransient<ISendMailService, SendMailService>();
 			// Razor or ControllerWithView
-			services.AddRazorPages();
+			services.AddRazorPages().AddRazorRuntimeCompilation();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
