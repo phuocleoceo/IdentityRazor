@@ -35,9 +35,13 @@ namespace IdentityRazor
 			{
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 			});
-			services.AddIdentity<AppUser, IdentityRole>()
+			services.AddDefaultIdentity<AppUser>()
 					.AddEntityFrameworkStores<IRContext>()
 					.AddDefaultTokenProviders();
+			// services.AddIdentity<AppUser, IdentityRole>()
+			// 		.AddEntityFrameworkStores<IRContext>()
+			// 		.AddDefaultTokenProviders().AddDefaultUI();
+
 			// Change Default setting of Identity
 			services.Configure<IdentityOptions>(options =>
 			{
@@ -70,7 +74,6 @@ namespace IdentityRazor
 			services.AddTransient<ISendMailService, SendMailService>();
 			// Razor or ControllerWithView
 			services.AddRazorPages();
-
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
