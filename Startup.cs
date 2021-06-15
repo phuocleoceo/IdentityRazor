@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 using IdentityRazor.Mail;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace IdentityRazor
 {
@@ -73,12 +74,21 @@ namespace IdentityRazor
 			services.AddOptions();
 			services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 			// 3rd Authentication
-			services.AddAuthentication().AddGoogle(options =>
+			services.AddAuthentication()
+			.AddGoogle(options =>
 			{
 				var googleSection = Configuration.GetSection("Authentication:Google");
 				options.ClientId = googleSection["ClientId"];
 				options.ClientSecret = googleSection["ClientSecret"];
+			})
+			.AddFacebook(options =>
+			{
+				var facebookSection = Configuration.GetSection("Authentication:Facebook");
+				options.AppId = facebookSection["AppId"];
+				options.AppSecret = facebookSection["AppSecret"];
+				options.CallbackPath = "/signin-facebook";
 			});
+
 			// DI
 			services.AddTransient<ISendMailService, SendMailService>();
 			// Razor or ControllerWithView
