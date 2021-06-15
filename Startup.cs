@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using IdentityRazor.Models;
 using IdentityRazor.Data;
 using Microsoft.AspNetCore.Identity;
+using IdentityRazor.Mail;
 
 namespace IdentityRazor
 {
@@ -29,6 +30,7 @@ namespace IdentityRazor
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			// DI for Database
 			services.AddDbContext<IRContext>(options =>
 			{
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -61,8 +63,14 @@ namespace IdentityRazor
 				options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
 				options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
 			});
-			//
+			// Configure Options
+			services.AddOptions();
+			services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+			// DI
+			services.AddTransient<ISendMailService, SendMailService>();
+			// Razor or ControllerWithView
 			services.AddRazorPages();
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
