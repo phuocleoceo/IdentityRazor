@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Birthday"></label>
-                @Html.TextBoxFor(m => m.Input.Birthday, "{0:dd/MM/yyyy}", new {@class = "form-control"})
+                <input id="datepicker" asp-for="Input.Birthday" class="form-control" />
                 <span asp-validation-for="Input.Birthday" class="text-danger"></span>
             </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
@@ -46,5 +46,14 @@
 </div>
 
 @section Scripts {
+    <script>
+        $(function () {
+            $('#datepicker').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1800:2020"
+            });
+        })
+    </script>
 <partial name="_ValidationScriptsPartial" />
 }
