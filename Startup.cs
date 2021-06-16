@@ -67,7 +67,7 @@ namespace IdentityRazor
 				options.User.RequireUniqueEmail = true;  // Email là duy nhất
 
 				// Cấu hình đăng nhập.
-				options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
+				options.SignIn.RequireConfirmedEmail = false;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
 				options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
 			});
 			// Configure Options
