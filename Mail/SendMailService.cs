@@ -4,10 +4,12 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Security;
 using System;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using MailKit.Net.Smtp;
 
 namespace IdentityRazor.Mail
 {
-	public class SendMailService : ISendMailService
+	public class SendMailService : IEmailSender
 	{
 		private readonly MailSettings mailSettings;
 		private readonly ILogger<SendMailService> logger;
@@ -32,7 +34,7 @@ namespace IdentityRazor.Mail
 			email.Body = builder.ToMessageBody();
 
 			// use SmtpClient by MailKit
-			using var smtp = new MailKit.Net.Smtp.SmtpClient();
+			using var smtp = new SmtpClient();
 
 			try
 			{
@@ -42,18 +44,13 @@ namespace IdentityRazor.Mail
 			}
 			catch (Exception ex)
 			{
-				// Send Failure, email content saved to mailssave folder
-				System.IO.Directory.CreateDirectory("mailssave");
-				var emailsavefile = string.Format(@"mailssave/{0}.eml", Guid.NewGuid());
-				await email.WriteToAsync(emailsavefile);
-
-				logger.LogInformation("Lỗi gửi mail, lưu tại - " + emailsavefile);
+				logger.LogError("Error when sending email to " + mailContent.To);
 				logger.LogError(ex.Message);
 			}
 
 			smtp.Disconnect(true);
 
-			logger.LogInformation("send mail to " + mailContent.To);
+			logger.LogInformation("Send mail to " + mailContent.To);
 		}
 
 		public async Task SendEmailAsync(string email, string subject, string htmlMessage)

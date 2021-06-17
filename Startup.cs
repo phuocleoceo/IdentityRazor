@@ -18,6 +18,7 @@ using IdentityRazor.Mail;
 using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace IdentityRazor
 {
@@ -90,7 +91,7 @@ namespace IdentityRazor
 			});
 
 			// DI
-			services.AddTransient<ISendMailService, SendMailService>();
+			services.AddTransient<IEmailSender, SendMailService>();
 			// Razor or ControllerWithView
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 		}
