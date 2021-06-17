@@ -4,10 +4,11 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Security;
 using System;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace IdentityRazor.Mail
 {
-	public class SendMailService : ISendMailService
+	public class SendMailService : IEmailSender
 	{
 		private readonly MailSettings mailSettings;
 		private readonly ILogger<SendMailService> logger;
